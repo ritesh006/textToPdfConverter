@@ -17,7 +17,7 @@ set(SOURCES
     src/main.c
     src/input.c
     src/txtToPdf.c
-    src/interface.c  # Corrected file name
+    src/interface.c  
     # Add more source files here if you have them
 )
 
