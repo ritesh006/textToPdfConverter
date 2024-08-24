@@ -33,4 +33,8 @@ void inputFunc()
     {
         printf("Error: File does not exist or cannot be opened.\n");
     }
+
+const char *name = filePath;
+
+    demo (name);
 }

@@ -3,6 +3,7 @@
 
 void mainInterface(void);
 void inputFunc();
+int demo (const char*); 
 // int txtToPdfConverterFunc()
 
 

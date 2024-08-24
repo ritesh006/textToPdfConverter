@@ -1,4 +1,4 @@
-# Install script for directory: /home/ritesh/Desktop/Projects/low_level_learning/c_project/txt_to_pdf
+# Install script for directory: /home/ritesh/Desktop/Project/c_Projects/textToPdfConverter
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -50,5 +50,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "/home/ritesh/Desktop/Projects/low_level_learning/c_project/txt_to_pdf/build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "/home/ritesh/Desktop/Project/c_Projects/textToPdfConverter/build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

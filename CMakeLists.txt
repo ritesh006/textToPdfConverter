@@ -1,16 +1,17 @@
 cmake_minimum_required(VERSION 3.5)
-
 project(txt_to_pdf_converter)
 
-# Find libHaru
-find_library(LIBHARU_LIBRARY NAMES hpdf libhpdf PATHS /usr/local/lib /opt/lib /opt/local/lib)
+# Set the library directory
+set(LIBHARU_DIR /home/ritesh/Desktop/Project/c_Projects/textToPdfConverter/lib)
 
-if(NOT LIBHARU_LIBRARY)
-    message(FATAL_ERROR "libHaru library not found")
+# Check if the library file exists
+if(NOT EXISTS ${LIBHARU_DIR}/libhpdf.so)
+    message(FATAL_ERROR "libHaru library not found in ${LIBHARU_DIR}")
 endif()
 
 # Include directories
 include_directories(include)
+include_directories(${CMAKE_SOURCE_DIR}/include)
 
 # Source files
 set(SOURCES
@@ -18,14 +19,21 @@ set(SOURCES
     src/input.c
     src/txtToPdf.c
     src/interface.c  
-    # Add more source files here if you have them
 )
 
 # Executable
 add_executable(txt_to_pdf ${SOURCES})
 
-# Link the libHaru library
-target_link_libraries(txt_to_pdf ${LIBHARU_LIBRARY})
+# Specify the directory where the linker should search for the library
+link_directories(${LIBHARU_DIR})
 
-# If you have headers that you're installing, you might also want to add an install command
-# install(TARGETS txt_to_pdf DESTINATION bin)
+# Link the libHaru library and the math library
+target_link_libraries(txt_to_pdf
+    ${LIBHARU_DIR}/libhpdf.so
+    m  # This links against the math library
+)
+
+# Set the RPATH to include the directory where the library is located
+set_target_properties(txt_to_pdf PROPERTIES
+    INSTALL_RPATH "${LIBHARU_DIR}"
+)

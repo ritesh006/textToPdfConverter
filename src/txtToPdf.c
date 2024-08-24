@@ -1,58 +1,125 @@
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include <math.h>
+#include <setjmp.h>
+#include "hpdf.h"
+#include <stdint.h>
+
+jmp_buf env;
+
+void error_handler(HPDF_STATUS error_no, HPDF_STATUS detail_no,void *user_data)
+{
+    printf("ERROR: error_no=%04X, detail_no=%u\n", (HPDF_UINT)error_no, (HPDF_UINT)detail_no);
+    longjmp(env, 1);
+}
 
 
-// #include "header.h"
-// #include <hpdf.h>
+int demo (const char *filePath)
+{
+const char *page_title = "Text Demo";
 
-// int txtToPdfConverterFunc()
-// {
-//     HPDF_Doc pdf;
-//     HPDF_Page page;
-//     const char *filename = "output.pdf";
-//     HPDF_REAL height, width;
+    HPDF_Doc pdf;
+    HPDF_Font font;
+    HPDF_Page page;
+    char fname[256];
+    char line[256];
+    FILE *file; 
+    uint8_t PAGE_PORTRAIT = 0;
+    uint8_t PAGE_LANDSCAPE = 1;
+    
+    int y_position = 750; // Start position from top of the page
+    
+    
+    printf("Enter Name for Saving the file: ");
+    scanf("%s",fname);
 
-//     // Create PDF document
-//     pdf = HPDF_New(NULL, NULL);
-//     if (!pdf) {
-//         printf("Error: Unable to create PDF document.\n");
-//         return EXIT_FAILURE;
-//     }
+    strcat(fname, ".pdf");
 
-//     // Add a new page to the document
-//     page = HPDF_AddPage(pdf);
-//     if (!page) {
-//         printf("Error: Unable to add page to the PDF document.\n");
-//         HPDF_Free(pdf);
-//         return EXIT_FAILURE;
-//     }
+    pdf = HPDF_New(error_handler, NULL);
+    if (!pdf)
+    {
+        printf("error: cannot create PdfDoc object\n");
+        return 1;
+    }
 
-//     // Set page size (A4 by default)
-//     HPDF_Page_SetSize(page, HPDF_PAGE_SIZE_A4, HPDF_PAGE_PORTRAIT);
+    if (setjmp(env))
+    {
+        HPDF_Free(pdf);
+        return 1;
+    }
 
-//     // Get page dimensions
-//     width = HPDF_Page_GetWidth(page);
-//     height = HPDF_Page_GetHeight(page);
+    /* set compression mode */
+    HPDF_SetCompressionMode(pdf, HPDF_COMP_ALL);
 
-//     // Set font and font size
-//     HPDF_Page_SetFontAndSize(page, HPDF_LoadStandardFont(pdf, "Helvetica"), 12.0);
+    /* create default-font */
+    font = HPDF_GetFont(pdf, "Helvetica", NULL);
 
-//     // Write text to the page
-//     HPDF_Page_BeginText(page);
-//     HPDF_Page_MoveTextPos(page, 50, height - 50);
-//     HPDF_Page_ShowText(page, "Hello, World!");
-//     HPDF_Page_EndText(page);
+    /* add a new page object. */
+    page = HPDF_AddPage(pdf);
+    HPDF_Page_SetSize(page, HPDF_PAGE_SIZE_A4, PAGE_PORTRAIT);
 
-//     // Save the document to a file
-//     if (HPDF_SaveToFile(pdf, filename) != HPDF_OK) {
-//         printf("Error: Unable to save PDF document to file.\n");
-//         HPDF_Free(pdf);
-//         return EXIT_FAILURE;
-//     }
+    file = fopen(filePath, "r");
+    if (!file) {
+        fprintf(stderr, "Failed to open input.txt\n");
+        HPDF_Free(pdf);
+        return 1;
+    }
 
-//     // Clean up
-//     HPDF_Free(pdf);
 
-//     printf("PDF document created successfully: %s\n", filename);
+    
+    HPDF_Page_SetFontAndSize(page, font, 12);
+    HPDF_Page_SetTextLeading(page, 15); // Set line spacing
+    HPDF_Page_BeginText(page);
 
-//    return EXIT_SUCCESS;
+    while (fgets(line, sizeof(line), file)) {
+        // if (y_position < 50) { // Check if we need to move to a new page
+        //     HPDF_Page_EndText(page); // End text block
+        //     page = HPDF_AddPage(pdf); // Add a new page
+        //     HPDF_Page_SetSize(page, HPDF_PAGE_SIZE_A4, HPDF_PAGE_SIZE_A4); // Set page size
+        //     HPDF_Page_BeginText(page); // Begin new text block
+        //     y_position = 750; // Reset y_position for new page
+        // }
 
-//     }
+        HPDF_Page_MoveTextPos(page, 50, y_position); // Set text position
+        HPDF_Page_ShowText(page, line); // Add text to the PDF
+        y_position -= 15; // Move down for the next line
+    }
+
+    HPDF_Page_EndText(page);
+    fclose(file);
+
+    if (HPDF_SaveToFile(pdf, fname) != HPDF_OK) {
+        fprintf(stderr, "Failed to save PDF file\n");
+        HPDF_Free(pdf);
+        return 1;
+    }
+
+
+
+/*  sample @demo for setting 
+    HPDF_Page_SetFontAndSize(page, font, 12);
+    HPDF_Page_SetTextLeading(page, 15); // Set line spacing
+
+    HPDF_Page_BeginText(page);
+    HPDF_Page_MoveTextPos(page, 50, y_position); // Set text position
+    HPDF_Page_ShowText(page, page_title);
+    HPDF_Page_EndText(page);
+
+
+    /* save the document to a file 
+    HPDF_SaveToFile(pdf, fname);
+
+*/ 
+
+
+
+
+
+
+    /* clean up */
+    HPDF_Free(pdf);
+
+    printf("PDF created successfully\n");
+ 
+}

@@ -1,3 +1,3 @@
-/home/ritesh/Desktop/Projects/low_level_learning/c_project/txt_to_pdf/build/CMakeFiles/txt_to_pdf.dir
-/home/ritesh/Desktop/Projects/low_level_learning/c_project/txt_to_pdf/build/CMakeFiles/edit_cache.dir
-/home/ritesh/Desktop/Projects/low_level_learning/c_project/txt_to_pdf/build/CMakeFiles/rebuild_cache.dir
+/home/ritesh/Desktop/Project/c_Projects/textToPdfConverter/build/CMakeFiles/txt_to_pdf.dir
+/home/ritesh/Desktop/Project/c_Projects/textToPdfConverter/build/CMakeFiles/edit_cache.dir
+/home/ritesh/Desktop/Project/c_Projects/textToPdfConverter/build/CMakeFiles/rebuild_cache.dir
