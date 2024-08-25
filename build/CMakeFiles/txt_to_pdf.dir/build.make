@@ -140,7 +140,8 @@ txt_to_pdf: CMakeFiles/txt_to_pdf.dir/src/input.c.o
 txt_to_pdf: CMakeFiles/txt_to_pdf.dir/src/txtToPdf.c.o
 txt_to_pdf: CMakeFiles/txt_to_pdf.dir/src/interface.c.o
 txt_to_pdf: CMakeFiles/txt_to_pdf.dir/build.make
-txt_to_pdf: ../lib/libhpdf.so
+txt_to_pdf: ../lib/libhpdf.a
+txt_to_pdf: /usr/lib/x86_64-linux-gnu/libz.so
 txt_to_pdf: CMakeFiles/txt_to_pdf.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/ritesh/Desktop/Project/c_Projects/textToPdfConverter/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Linking C executable txt_to_pdf"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/txt_to_pdf.dir/link.txt --verbose=$(VERBOSE)

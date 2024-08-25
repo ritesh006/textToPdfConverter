@@ -5,8 +5,8 @@ project(txt_to_pdf_converter)
 set(LIBHARU_DIR /home/ritesh/Desktop/Project/c_Projects/textToPdfConverter/lib)
 
 # Check if the library file exists
-if(NOT EXISTS ${LIBHARU_DIR}/libhpdf.so)
-    message(FATAL_ERROR "libHaru library not found in ${LIBHARU_DIR}")
+if(NOT EXISTS ${LIBHARU_DIR}/libhpdf.a)
+    message(FATAL_ERROR "libHaru static library not found in ${LIBHARU_DIR}")
 endif()
 
 # Include directories
@@ -24,16 +24,20 @@ set(SOURCES
 # Executable
 add_executable(txt_to_pdf ${SOURCES})
 
-# Specify the directory where the linker should search for the library
-link_directories(${LIBHARU_DIR})
-
-# Link the libHaru library and the math library
-target_link_libraries(txt_to_pdf
-    ${LIBHARU_DIR}/libhpdf.so
-    m  # This links against the math library
-)
+# Find and link zlib
+find_package(ZLIB REQUIRED)
+if (ZLIB_FOUND)
+    include_directories(${ZLIB_INCLUDE_DIRS})
+    target_link_libraries(txt_to_pdf
+        ${LIBHARU_DIR}/libhpdf.a
+        m  # This links against the math library
+        ${ZLIB_LIBRARIES}  # This links against the zlib library
+    )
+else()
+    message(FATAL_ERROR "ZLIB library not found")
+endif()
 
 # Set the RPATH to include the directory where the library is located
 set_target_properties(txt_to_pdf PROPERTIES
-    INSTALL_RPATH "${LIBHARU_DIR}"
+    INSTALL_RPATH_USE_LINK_PATH TRUE
 )

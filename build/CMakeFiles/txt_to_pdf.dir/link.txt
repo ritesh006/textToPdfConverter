@@ -1,1 +1,1 @@
-/usr/bin/cc CMakeFiles/txt_to_pdf.dir/src/main.c.o CMakeFiles/txt_to_pdf.dir/src/input.c.o CMakeFiles/txt_to_pdf.dir/src/txtToPdf.c.o CMakeFiles/txt_to_pdf.dir/src/interface.c.o -o txt_to_pdf  -Wl,-rpath,/home/ritesh/Desktop/Project/c_Projects/textToPdfConverter/lib ../lib/libhpdf.so -lm 
+/usr/bin/cc CMakeFiles/txt_to_pdf.dir/src/main.c.o CMakeFiles/txt_to_pdf.dir/src/input.c.o CMakeFiles/txt_to_pdf.dir/src/txtToPdf.c.o CMakeFiles/txt_to_pdf.dir/src/interface.c.o -o txt_to_pdf  ../lib/libhpdf.a -lm /usr/lib/x86_64-linux-gnu/libz.so 
