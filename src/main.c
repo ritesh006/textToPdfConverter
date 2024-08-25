@@ -9,18 +9,5 @@ int main(int argc, char const *argv[])
     inputFunc();
 
 
-    //demo();
-
-
-//test masg
-
-
-
-
-
-
-
-
-
     return 0;
 }
